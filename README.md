@@ -8,7 +8,7 @@
 
 ## What it does
 
-Kiko Match Madness asks you to match pairs of hidden Kiko cards before the timer runs out. SysOpt-73B watches your clicks and takes an invisible screenshot each time you flip a card, then crops and displays that card in a **companion side panel** — giving you a persistent visual reference of everything you've revealed so far.
+Kiko Match III asks you to match pairs of hidden Kikos. SysOpt-73B watches your clicks and takes an invisible screenshot each time you flip a card, then crops and displays that card in a **companion side panel** — giving you a persistent visual reference of everything you've revealed so far.
 
 The extension **never injects anything into the game page** and does not automate any clicks. It is read-only: it only observes and displays.
 
