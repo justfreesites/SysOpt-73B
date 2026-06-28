@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "SysOpt-73B",
   "version": "1.0.0",
-  "description": "Passive visual aide for the Kiko Pop timed memory matching game. Tracks revealed cards in a companion side panel.",
+  "description": "Passive visual aide for Kiko Match Madness (Kiko Match III), the timed memory matching game on Neopets. Tracks revealed cards in a companion side panel.",
   "permissions": [
     "sidePanel",
     "activeTab",

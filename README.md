@@ -1,12 +1,12 @@
-# SysOpt-73B — Kiko Pop Memory Tracker
+# SysOpt-73B — Kiko Match Madness Tracker
 
-> A passive visual aide Chrome Extension for the **Kiko Pop** timed memory-matching game on [Neopets](https://www.neopets.com).
+> A passive visual aide Chrome Extension for **Kiko Match Madness** (also known as **Kiko Match III**), the timed memory-matching game on [Neopets](https://www.neopets.com).
 
 ---
 
 ## What it does
 
-Kiko Pop asks you to match pairs of hidden Kiko cards before the timer runs out. SysOpt-73B watches your clicks and takes an invisible screenshot each time you flip a card, then crops and displays that card in a **companion side panel** — giving you a persistent visual reference of everything you've revealed so far.
+Kiko Match Madness asks you to match pairs of hidden Kiko cards before the timer runs out. SysOpt-73B watches your clicks and takes an invisible screenshot each time you flip a card, then crops and displays that card in a **companion side panel** — giving you a persistent visual reference of everything you've revealed so far.
 
 The extension **never injects anything into the game page** and does not automate any clicks. It is read-only: it only observes and displays.
 
@@ -40,9 +40,9 @@ The extension **never injects anything into the game page** and does not automat
 
 Click the **SysOpt-73B** icon in the Chrome toolbar. The companion panel opens to the right of the browser window.
 
-### 2 — Navigate to Kiko Pop
+### 2 — Navigate to Kiko Match Madness
 
-Go to the Kiko Pop game on Neopets and wait for the game to fully load (the Unity canvas must be present on the page).
+Go to **Kiko Match Madness** (or Kiko Match III) on Neopets and wait for the game to fully load (the Unity canvas must be present on the page).
 
 ### 3 — Select your grid size
 
