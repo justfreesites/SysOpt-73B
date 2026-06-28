@@ -63,7 +63,7 @@ This is a **one-time step per grid size**. It tells the extension exactly where 
 1. Click **◎ Calibrate Card Grid** in the settings drawer.
 2. The status bar will prompt you to click the **centre of the top-left card** in the game grid. Click it.
 3. The status bar will then prompt you to click the **centre of the bottom-right card**. Click it.
-4. Calibration is saved automatically — you won't need to redo this unless you resize the browser window.
+4. Calibration is saved automatically — you won't need to redo this unless you resize the browser window (i.e. full screen mode).
 
 ### 5 — Start tracking
 
