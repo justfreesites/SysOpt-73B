@@ -2,6 +2,8 @@
 
 > A passive visual aide Chrome Extension for **Kiko Match Madness** (also known as **Kiko Match III**), the timed memory-matching game on [Neopets](https://www.neopets.com).
 
+![SysOpt-73B companion panel showing a 6×6 grid of revealed Kiko cards beside the game](example.png)
+
 ---
 
 ## What it does
