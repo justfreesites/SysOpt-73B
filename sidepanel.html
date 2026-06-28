@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SysOpt-73B</title>
+  <style>
+    /* ── Design tokens ─────────────────────────────────────────────────────── */
+    :root {
+      --bg-deep:       #0d0f18;
+      --bg-panel:      #13162a;
+      --bg-card:       #1a1f36;
+      --bg-card-empty: #10132030;
+      --border:        #2a2f4e;
+      --border-focus:  #5b6af0;
+      --accent:        #5b6af0;
+      --accent-glow:   rgba(91, 106, 240, 0.35);
+      --match-color:   #22c55e;
+      --match-glow:    rgba(34, 197, 94, 0.45);
+      --text-primary:  #e8eaf6;
+      --text-muted:    #7b82b4;
+      --text-label:    #9da4d6;
+      --radius-sm:     6px;
+      --radius-md:     10px;
+      --radius-lg:     14px;
+      --transition:    0.2s ease;
+      --font:          'Inter', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    /* ── Reset & base ───────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: var(--font);
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── Header / brand bar ─────────────────────────────────────────────────── */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px 10px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #5b6af0, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .header-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      background: linear-gradient(90deg, #a5b4fc, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-sub {
+      margin-left: auto;
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* ── Settings toggle bar ───────────────────────────────────────────────── */
+    #btn-settings-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 6px 14px;
+      background: var(--bg-panel);
+      border: none;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--font);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      flex-shrink: 0;
+    }
+
+    #btn-settings-toggle:hover {
+      background: rgba(255,255,255,0.04);
+      color: var(--text-primary);
+    }
+
+    #btn-settings-toggle .chevron {
+      display: inline-block;
+      font-size: 8px;
+      transition: transform 0.25s ease;
+    }
+
+    #btn-settings-toggle.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    /* ── Settings panel (collapsible) ─────────────────────────────────── */
+    .settings-panel {
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+      max-height: 0;
+      padding: 0 14px;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .settings-panel.open {
+      max-height: 380px;
+      padding: 12px 14px;
+    }
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .settings-label {
+      color: var(--text-label);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      min-width: 90px;
+    }
+
+    select,
+    input[type="number"] {
+      flex: 1;
+      min-width: 80px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: var(--font);
+      font-size: 12px;
+      padding: 5px 8px;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%237b82b4' d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 12px;
+      padding-right: 28px;
+    }
+
+    select:focus,
+    input[type="number"]:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      opacity: 0.4;
+    }
+
+    /* ── Clear button ───────────────────────────────────────────────────────── */
+    #btn-clear {
+      width: 100%;
+      padding: 7px 14px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      font-family: var(--font);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color var(--transition), color var(--transition),
+                  background var(--transition), box-shadow var(--transition);
+    }
+
+    #btn-clear:hover {
+      border-color: #ef4444;
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.08);
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.2);
+    }
+
+    #btn-clear:active {
+      transform: scale(0.98);
+    }
+
+    /* ── Tracking toggle ────────────────────────────────────────────────────── */
+    #btn-track {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 2px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      transition: border-color var(--transition), color var(--transition),
+                  background var(--transition), box-shadow var(--transition);
+    }
+
+    #btn-track.tracking {
+      border-color: var(--match-color);
+      color: var(--match-color);
+      background: rgba(34, 197, 94, 0.1);
+      box-shadow: 0 0 12px var(--match-glow);
+      animation: track-pulse 2s infinite;
+    }
+
+    @keyframes track-pulse {
+      0%, 100% { box-shadow: 0 0 12px var(--match-glow); }
+      50%       { box-shadow: 0 0 4px  var(--match-glow); }
+    }
+
+    #btn-track:active { transform: scale(0.98); }
+
+    /* ── Calibrate button ─────────────────────────────────────────────── */
+    #btn-calib {
+      width: 100%;
+      padding: 7px 14px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      font-family: var(--font);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color var(--transition), color var(--transition),
+                  background var(--transition), box-shadow var(--transition);
+    }
+
+    #btn-calib:hover {
+      border-color: #f59e0b;
+      color: #f59e0b;
+      background: rgba(245, 158, 11, 0.08);
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.2);
+    }
+
+    #btn-calib.calib-active {
+      border-color: #f59e0b;
+      color: #f59e0b;
+      background: rgba(245, 158, 11, 0.12);
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+      animation: calib-pulse 1s infinite;
+    }
+
+    @keyframes calib-pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.6; }
+    }
+
+    #btn-calib.calib-done {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    #btn-calib:active { transform: scale(0.98); }
+
+    /* ── Status bar ─────────────────────────────────────────────────────────── */
+    .status-bar {
+      padding: 6px 14px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      flex-shrink: 0;
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+
+    .status-dot.active {
+      background: var(--match-color);
+      box-shadow: 0 0 6px var(--match-glow);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    .status-text {
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Grid container ─────────────────────────────────────────────────────── */
+    .grid-wrapper {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+
+    .grid-wrapper::-webkit-scrollbar       { width: 5px; }
+    .grid-wrapper::-webkit-scrollbar-track { background: transparent; }
+    .grid-wrapper::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+    #grid-container {
+      display: grid;
+      gap: 5px;
+    }
+
+    /* ── Individual tile ────────────────────────────────────────────────────── */
+    .tile {
+      aspect-ratio: 1 / 1;
+      background: var(--bg-card-empty);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: border-color var(--transition), box-shadow var(--transition),
+                  transform var(--transition);
+    }
+
+    .tile:hover {
+      transform: scale(1.04);
+      z-index: 2;
+    }
+
+    .tile.empty::after {
+      content: attr(data-index);
+      font-size: 10px;
+      color: var(--border);
+      font-weight: 600;
+    }
+
+    .tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: calc(var(--radius-sm) - 1px);
+    }
+
+    /* Matched pair highlight */
+    .tile.matched {
+      border-color: var(--match-color);
+      box-shadow: 0 0 10px var(--match-glow), inset 0 0 0 1px var(--match-color);
+      animation: match-flash 0.4s ease;
+    }
+
+    @keyframes match-flash {
+      0%   { box-shadow: 0 0 20px var(--match-glow); }
+      100% { box-shadow: 0 0 10px var(--match-glow); }
+    }
+
+    /* Index badge */
+    .tile-badge {
+      position: absolute;
+      top: 2px;
+      left: 3px;
+      font-size: 8px;
+      color: rgba(255,255,255,0.3);
+      font-weight: 700;
+      pointer-events: none;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-icon">🧩</div>
+    <span class="header-title">SysOpt-73B</span>
+    <span class="header-sub">Memory Tracker</span>
+  </header>
+
+  <!-- ── Tracking toggle ── -->
+  <div style="padding: 10px 14px; background: var(--bg-panel); border-bottom: 1px solid var(--border);">
+    <button id="btn-track" type="button">▶ Start Tracking</button>
+  </div>
+
+  <!-- ── Settings toggle ── -->
+  <button id="btn-settings-toggle" type="button" aria-expanded="false" aria-controls="settings-panel">
+    <span>⚙ Settings</span>
+    <span class="chevron">▼</span>
+  </button>
+
+  <!-- ── Settings panel (collapsible) ── -->
+  <section class="settings-panel" id="settings-panel" aria-label="Settings">
+
+    <div class="settings-row">
+      <label class="settings-label" for="grid-select">Grid Layout</label>
+      <select id="grid-select" title="Select grid layout">
+        <option value="16">4 × 4  (16 tiles)</option>
+        <option value="20">4 × 5  (20 tiles)</option>
+        <option value="30">5 × 6  (30 tiles)</option>
+        <option value="36">6 × 6  (36 tiles)</option>
+      </select>
+    </div>
+
+    <div class="settings-row">
+      <label class="settings-label" for="delay-input">Capture Delay</label>
+      <input
+        id="delay-input"
+        type="number"
+        min="0"
+        max="5000"
+        step="50"
+        value="500"
+        title="Screenshot capture delay in milliseconds"
+      />
+      <span style="color: var(--text-muted); font-size: 11px; white-space: nowrap;">ms</span>
+    </div>
+
+    <button id="btn-clear" type="button">⟳ Clear Board</button>
+    <button id="btn-calib" type="button">◎ Calibrate Card Grid</button>
+
+  </section>
+
+  <!-- ── Status bar ── -->
+  <div class="status-bar" aria-live="polite">
+    <div class="status-dot" id="status-dot"></div>
+    <span class="status-text" id="status-text">Waiting for click…</span>
+  </div>
+
+  <!-- ── Grid ── -->
+  <main class="grid-wrapper">
+    <div id="grid-container" role="grid" aria-label="Revealed cards"></div>
+  </main>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>

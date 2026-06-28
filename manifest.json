@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "SysOpt-73B",
+  "version": "1.0.0",
+  "description": "Passive visual aide for the Kiko Pop timed memory matching game. Tracks revealed cards in a companion side panel.",
+  "permissions": [
+    "sidePanel",
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "*://*.neopets.com/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.neopets.com/*"],
+      "js": ["observer.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "action": {
+    "default_title": "SysOpt-73B: Open Companion Panel"
+  }
+}
