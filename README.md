@@ -1,6 +1,6 @@
-# SysOpt-73B — Kiko Match Madness Tracker
+# Kiko Match III Visual Tracker
 
-> A passive visual aide Chrome Extension for **Kiko Match Madness** (also known as **Kiko Match III**), the timed memory-matching game on [Neopets](https://www.neopets.com).
+> A passive visual aide Chrome Extension for **Kiko Match III**, the timed memory-matching game on [Neopets](https://www.neopets.com).
 
 ![SysOpt-73B companion panel showing a 6×6 grid of revealed Kiko cards beside the game](example.png)
 
@@ -8,7 +8,7 @@
 
 ## What it does
 
-Kiko Match III asks you to match pairs of hidden Kikos. SysOpt-73B watches your clicks and takes an invisible screenshot each time you flip a card, then crops and displays that card in a **companion side panel** — giving you a persistent visual reference of everything you've revealed so far.
+Kiko Match III asks you to match pairs of hidden Kikos. This extension watches your clicks and takes an invisible screenshot each time you flip a card, then crops and displays that card in a **companion side panel** — giving you a persistent visual reference of everything you've revealed so far.
 
 The extension **never injects anything into the game page** and does not automate any clicks. It is read-only: it only observes and displays.
 
